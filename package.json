@@ -1,0 +1,19 @@
+{
+  "name": "googlecalendar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "docs": "node ./docs.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "fs": "^0.0.1-security",
+    "googleapis": "^39.2.0",
+    "readline": "^1.3.0"
+  }
+}
