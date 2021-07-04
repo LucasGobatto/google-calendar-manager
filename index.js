@@ -10,6 +10,11 @@ async function app() {
 
   const eventDateTime = dateTimeForCalendar();
 
+  if (!eventDateTime.end) {
+    console.error('invalid inputed date')
+    return null;
+  }
+
   const event = createEvent(eventDateTime);
 
   calendar.freebusy.query({

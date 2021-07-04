@@ -11,42 +11,63 @@ const defaultEndValue = {
   hour: defaultStartValue.hour + 1,
 }
 
-const dateTimeForCalendar = (inital = defaultStartValue, final = defaultEndValue) => {
-  const time = '';
+const dateTimeForCalendar = (initial = defaultStartValue, final = defaultEndValue) => {
+  if (!verifyDate(initial) || !verifyDate(final)) {
+    return null;
+  } 
 
-  const date = { now: new Date() };
+  const formatStartDateObject = formatDateToString(initial);
+  const formatFinalDateObject = formatDateToString(final);
 
-  date.year = date.now.getFullYear();
-  date.month = date.now.getMonth() + 1;
-  date.day = date.now.getDate();
-  date.hour = date.now.getHours();
-  date.minutes = date.now.getMinutes();
+  const start = parseDateToString(formatStartDateObject);
+  const end = parseDateToString(formatFinalDateObject);
+
+  return { start, end };
+}
+
+function formatDateToString(date) {
+  const dateToString = { ...date };
 
   if (date.month < 10) { 
-    date.month = `0${date.month}`;
+    dateToString.month = `0${date.month}`;
   }
 
   if (date.day < 10) {
-    date.day = `0${date.day}`;
+    dateToString.day = `0${date.day}`;
   }
 
   if (date.hour < 10) {
-    date.hour = `0${date.hour}`;
+    dateToString.hour = `0${date.hour}`;
   }
   
   if (date.minutes < 10) {
-    date.minutes = `0${date.minutes}`;
+    dateToString.minutes = `0${date.minutes}`;
   }
 
-  const { year, month, day, hour, minutes } = date;
-  const newDateTime = `${year}-${month}-${day}T${hour}:${minutes}:00.000${time}`
-
-  const start = new Date(Date.parse(newDateTime));
-  const end = new Date(new Date(start).setHours(start.getHours() +1));
-
-  return { start, end }
+  return dateToString;
 }
 
+function parseDateToString(date) {
+  const { year, month, day, hour, minutes } = date;
+  const stringifyDate = `${year}-${month}-${day}T${hour}:${minutes}:00.000Z`;
+
+  return new Date(Date.parse(stringifyDate));
+}
+
+function verifyDate(date) {
+  const { day, month, year, hour, minutes } = date;
+
+  const validDay = -1 < day && day < 32;
+  const validMonth = -1 < month && month < 12;
+  const validHour = -1 < hour && hour < 25;
+  const validYear = 1899 < year && year < 10000;
+  const validMinute = -1 < minutes && minutes < 60;
+
+  return validDay && validMonth && validYear && validHour && validMinute;
+}
+ 
 module.exports = {
-  dateTimeForCalendar
+  dateTimeForCalendar,
+  formatDateToString,
+  parseDateToString,
 }
